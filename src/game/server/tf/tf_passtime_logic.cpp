@@ -92,11 +92,11 @@ static const CCountdownAnnouncer::TimeSounds sCountdownSoundsRoundBegin = {
 	"Announcer.RoundBegins60seconds",
 	"Announcer.RoundBegins30seconds",
 	"Announcer.RoundBegins10seconds",
-	"Announcer.RoundBegins5seconds",
-	"Announcer.RoundBegins4seconds",
-	"Announcer.RoundBegins3seconds",
-	"Announcer.RoundBegins2seconds",
-	"Announcer.RoundBegins1seconds",
+	"Passtime.Ball.Countdown.1",
+	"Passtime.Ball.Countdown.1",
+	"Passtime.Ball.Countdown.1",
+	"Passtime.Ball.Countdown.1",
+	"Passtime.Ball.Countdown.2",
 };
 
 //-----------------------------------------------------------------------------
@@ -738,11 +738,14 @@ void CTFPasstimeLogic::Precache()
 //	PrecacheScriptSound( "sf14.Merasmus.Soccer.GoalRed" );
 //	PrecacheScriptSound( "sf14.Merasmus.Soccer.GoalBlue" );
 
-	//testing
+	//P4SS
 	PrecacheScriptSound( "Passtime.Merasmus.Deathbomb" );
 	PrecacheScriptSound( "Passtime.Merasmus.Why" );
+	PrecacheScriptSound( "Passtime.Merasmus.Overtime" );
 
-	PrecacheScriptSound( "Passtime.Merasmus.Overtime");
+	PrecacheScriptSound( "Passtime.Ball.Countdown.1" );
+	PrecacheScriptSound( "Passtime.Ball.Countdown.2" );
+
 	PrecacheScriptSound( "Passtime.AskForBall" );
 
 	// secret room stuff
@@ -2093,11 +2096,14 @@ bool CTFPasstimeLogic::ParseSetSection( const char *pStr, SetSectionParams &s ) 
 {
 	char pszStartName[64];
 	char pszEndName[64];
-	const int iScanCount = sscanf( pStr, "%i %s %s", &s.num, pszStartName, pszEndName ); // WHAT YEAR IS IT
+	const int iScanCount = sscanf( pStr, "%i %63s %63s", &s.num, pszStartName, pszEndName ); // WHAT YEAR IS IT
 	if ( iScanCount != 3 )
 	{
 		return false;
 	}
+	pszStartName[ ARRAYSIZE( pszStartName ) - 1 ] = '\0';
+	pszEndName[ ARRAYSIZE( pszEndName ) - 1 ] = '\0';
+
 	s.pSectionStart = dynamic_cast<CPathTrack*>( gEntList.FindEntityByName( 0, pszStartName ) );
 	s.pSectionEnd = dynamic_cast<CPathTrack*>( gEntList.FindEntityByName( 0, pszEndName ) );
 

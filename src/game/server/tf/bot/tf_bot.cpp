@@ -144,89 +144,66 @@ const char *GetRandomBotName( void )
 {
 	static const char *nameList[] =
 	{
-		"Chucklenuts",
-		"CryBaby",
-		"WITCH",
-		"ThatGuy",
-		"Still Alive",
-		"Hat-Wearing MAN",
-		"Me",
-		"Numnutz",
-		"H@XX0RZ",
-		"The G-Man",
-		"Chell",
-		"The Combine",
-		"Totally Not A Bot",
-		"Pow!",
-		"Zepheniah Mann",
-		"THEM",
-		"LOS LOS LOS",
-		"10001011101",
-		"DeadHead",
-		"ZAWMBEEZ",
-		"MindlessElectrons",
-		"TAAAAANK!",
-		"The Freeman",
-		"Black Mesa",
-		"Soulless",
-		"CEDA",
-		"BeepBeepBoop",
-		"NotMe",
-		"CreditToTeam",
-		"BoomerBile",
-		"Someone Else",
-		"Mann Co.",
-		"Dog",
-		"Kaboom!",
-		"AmNot",
-		"0xDEADBEEF",
-		"HI THERE",
-		"SomeDude",
-		"GLaDOS",
-		"Hostage",
-		"Headful of Eyeballs",
-		"CrySomeMore",
-		"Aperture Science Prototype XR7",
-		"Humans Are Weak",
-		"AimBot",
-		"C++",
-		"GutsAndGlory!",
-		"Nobody",
+		"Jack",
+		"Stoic",
+		"Bonzo the Sumerian Circus God",
+		"Japanese Mafia",
+		"Car game is better",
+		"Failed Teammate Clone #14",
+		"Multi-Dimensional Username",
+		"I SHALL NOT PASS!!!",
+		"Gundorf",
+		"PASS Time Michael Jordan",
+		"Tom Jones",
+		"Puny Mortal",
+		"Tactical egg!",
+		"Russian Detective",
+		"Soldier's Pet Raccoon",
+		"Bombinomicon ($6.66)",
+		"Burt Lancaster",
+		"Pumpkin with a brain",
+		"Toilet bowling champion",
+		"No need",
+		"wball",
+		"Remove Medic",
+		"Satan (German)",
+		"Demo-limit 3 #freedemo",
+		"how to fly as demonstration man",
+		"Give Demoman a glock",
+		"Worst Roommate",
+		"baldperson12",
+		"Potato Paul",
+		"yShoes",
+		"Bread",
+		"Headphones",
+		"Wired conn3ction",
+		"Yo Yo Barry John",
+		"unconnected",
+		"Chairs... Yummy!",
+		"LunarDark",
+		"h",
+		"Panacea",
+		"Herobrine",
+		"Magnet Carlson",
+		"Mark Wallbug",
+		"Michael Jurden",
+		"Toad of Ethics",
+		"Frog of War",
+		"niceperson12",
+		"Headbug to Heaven",
 		"Saxton Hale",
 		"RageQuit",
 		"Screamin' Eagles",
 
 		"Ze Ubermensch",
 		"Maggot",
-		"CRITRAWKETS",
 		"Herr Doktor",
-		"Gentlemanne of Leisure",
-		"Companion Cube",
-		"Target Practice",
-		"One-Man Cheeseburger Apocalypse",
-		"Crowbar",
-		"Delicious Cake",
-		"IvanTheSpaceBiker",
-		"I LIVE!",
-		"Cannon Fodder",
 
-		"trigger_hurt",
-		"Nom Nom Nom",
-		"Divide by Zero",
 		"GENTLE MANNE of LEISURE",
-		"MoreGun",
-		"Tiny Baby Man",
-		"Big Mean Muther Hubbard",
-		"Force of Nature",
 
-		"Crazed Gunman",
 		"Grim Bloody Fable",
 		"Poopy Joe",
-		"A Professional With Standards",
-		"Freakin' Unbelievable",
 		"SMELLY UNFORTUNATE",
-		"The Administrator",
-		"Mentlegen",
 
 		"Archimedes!",
 		"Ribs Grow Back",
@@ -704,9 +681,9 @@ DEFINE_SCRIPTFUNC( IsOnAnyMission, "Return true if this bot has a current missio
 DEFINE_SCRIPTFUNC_WRAPPED( SetMissionTarget, "Set this bot's mission target to the given entity" )
 DEFINE_SCRIPTFUNC_WRAPPED( GetMissionTarget, "Get this bot's current mission target" )
 
-DEFINE_SCRIPTFUNC( SetBehaviorFlag, "Set the given behavior flag(s) for this bot" )
-DEFINE_SCRIPTFUNC( ClearBehaviorFlag, "Clear the given behavior flag(s) for this bot" )
-DEFINE_SCRIPTFUNC( IsBehaviorFlagSet, "Return true if the given behavior flag(s) are set for this bot" )
+DEFINE_SCRIPTFUNC_WRAPPED( SetBehaviorFlag, "Set the given behavior flag(s) for this bot" )
+DEFINE_SCRIPTFUNC_WRAPPED( ClearBehaviorFlag, "Clear the given behavior flag(s) for this bot" )
+DEFINE_SCRIPTFUNC_WRAPPED( IsBehaviorFlagSet, "Return true if the given behavior flag(s) are set for this bot" )
 
 DEFINE_SCRIPTFUNC_WRAPPED( SetActionPoint, "Set the given action point for this bot" )
 DEFINE_SCRIPTFUNC_WRAPPED( GetActionPoint, "Get the given action point for this bot" )
@@ -4589,15 +4566,15 @@ Action< CTFBot > *CTFBot::OpportunisticallyUseWeaponAbilities( void )
 				}
 			}
 		}
-		else if ( weapon->GetWeaponID() == TF_WEAPON_BAT_WOOD )
+		else if ( ( weapon->GetWeaponID() == TF_WEAPON_BAT_WOOD ) || ( weapon->GetWeaponID() == TF_WEAPON_BAT_GIFTWRAP ) )
 		{
-			// sandman
+			// sandman or wrap assassin
 			if ( GetAmmoCount( TF_AMMO_GRENADES1 ) > 0 )
 			{
 				const CKnownEntity *threat = GetVisionInterface()->GetPrimaryKnownThreat();
 				if ( threat && threat->IsVisibleInFOVNow() )
 				{
-					// hit a stunball
+					// hit a stunball or bauble
 					PressAltFireButton();			
 				}
 			}
@@ -4891,9 +4868,16 @@ void CTFBot::AddItem( const char* pszItemName )
 	CItemSelectionCriteria criteria;
 	criteria.BAddCondition( "name", k_EOperator_String_EQ, pszItemName, true );
 
-	CBaseEntity *pItem = ItemGeneration()->GenerateRandomItem( &criteria, WorldSpaceCenter(), vec3_angle );
+	int classNum = GetPlayerClass()->GetClassIndex();
+	CBaseEntity *pItem = ItemGeneration()->GenerateRandomItem( &criteria, WorldSpaceCenter(), vec3_angle, NULL, classNum);
 	if ( pItem )
 	{
+		CTFWeaponBuilder *pBuilder = dynamic_cast<CTFWeaponBuilder *>( pItem );
+		if ( pBuilder )
+		{
+			pBuilder->SetSubType( GetPlayerClass()->GetData()->m_aBuildable[0] );
+		}
+
 		CEconItemView *pScriptItem = static_cast< CBaseCombatWeapon * >( pItem )->GetAttributeContainer()->GetItem();
 
 		// If we already have an item in that slot, remove it

@@ -241,6 +241,18 @@ struct MapInfo_t
 };
 
 static MapInfo_t s_ValveMaps[] = {
+	//PF
+	{ "pass_arena2", "Arena2", "#Gametype_Passtime" },
+	{ "pass_arena2_classic", "Arena2 Classic", "#Gametype_Passtime" },
+	{ "pass_stadium", "Stadium", "#Gametype_Passtime" },
+	{ "pass_stonework", "Stonework", "#Gametype_Passtime" },
+	{ "pass_plexiglass", "Plexiglass", "#Gametype_Passtime" },
+	{ "pass_boutique", "Plexiglass", "#Gametype_Passtime" },
+	{ "tr_throwing_grounds", "Throwing Grounds", "#Gametype_Training" },
+	{ "tr_stadium_surf", "Stadium (Surf)", "#Gametype_Training" },
+	{ "jksr_arena2", "Arena2 (JKSR)", "#Gametype_Jacksercise" },
+	
+	//TF2
 	{ "ctf_2fort",	"2Fort",		"#Gametype_CTF" },
 	{ "cp_dustbowl",	"Dustbowl",		"#TF_AttackDefend" },
 	{ "cp_granary",	"Granary",		"#Gametype_CP" },
@@ -396,7 +408,22 @@ static MapInfo_t s_CommunityMaps[] = {
 	{ "ctf_penguin_peak", "Penguin Peak", "#Gametype_CTF" },
 	{ "pl_patagonia", "Patagonia", "#Gametype_Escort" },
 	{ "plr_cutter", "Cutter", "#Gametype_EscortRace" },
-	{ "vsh_maul", " Maul", "#GameType_VSH" },
+	{ "vsh_maul", "Maul", "#GameType_VSH" },
+	{ "pl_citadel", "Citadel", "#Gametype_Escort" },
+	{ "pl_aquarius", "Aquarius", "#Gametype_Escort" },
+	{ "cp_fulgur", "Fulgur", "#TF_AttackDefend" },
+	{ "cp_cargo", "Cargo", "#TF_AttackDefend" },
+	{ "cp_conifer", "Conifer", "#TF_AttackDefend" },
+	{ "koth_boardwalk", "Boardwalk", "#Gametype_Koth" },
+	{ "koth_blowout", "Blowout", "#Gametype_Koth" },
+	{ "koth_mannhole", "Mannhole", "#Gametype_Koth" },
+	{ "koth_demolition", "Demolition", "#Gametype_Koth" },
+	{ "ctf_pressure", "Pressure", "#Gametype_CTF" },
+	{ "cp_cowerhouse", "Cowerhouse", "#Gametype_CP" },
+	{ "koth_dusker", "Dusker", "#Gametype_Koth" },
+	{ "arena_afterlife", "Afterlife", "#Gametype_Arena" },
+	{ "ctf_doublecross_event", "Devilcross", "#Gametype_CTF" },
+	{ "sd_marshlands", "Marshlands", "#GameType_HTF" },
 };
 
 /*
@@ -576,6 +603,25 @@ static FeaturedWorkshopMap_t s_FeaturedWorkshopMaps[] = {
 	{ "pl_patagonia",			3236427113 },
 	{ "plr_cutter",				3363801747 },
 	{ "vsh_maul",				3069796653 },
+
+	// Summer 2025
+	{ "pl_citadel",				3474587494 },
+	{ "pl_aquarius",			3478583193 },
+	{ "cp_fulgur",				2068252300 },
+	{ "cp_cargo",				3488669143 },
+	{ "cp_conifer",				1419048064 },
+	{ "koth_boardwalk",			3475789229 },
+	{ "koth_blowout",			3473248257 },
+	{ "koth_mannhole",			3478225408 },
+	{ "koth_demolition",		3473618662 },
+	{ "ctf_pressure",			3480634190 },
+
+	// Halloween 2025
+	{ "cp_cowerhouse",			3028277335 },
+	{ "koth_dusker",			3562630084 },
+	{ "arena_afterlife",		3557320996 },
+	{ "ctf_doublecross_event",	3024700002 },
+	{ "sd_marshlands",			3565681202 },
 };
 
 */
@@ -677,6 +723,9 @@ ConVar tf_player_drop_bonus_ducks( "tf_player_drop_bonus_ducks", "-1", FCVAR_REP
 
 ConVar tf_allow_player_name_change( "tf_allow_player_name_change", "1", FCVAR_NOTIFY, "Allow player name changes." );
 
+//P4SS: Custom killbinds
+ConVar pf_kill_enable_custom_ragdolls( "pf_kill_enable_custom_ragdolls", "1", FCVAR_REPLICATED, "Allow players to use custom ragdolls with pf_kill" );
+
 ConVar tf_weapon_criticals_distance_falloff( "tf_weapon_criticals_distance_falloff", "0", FCVAR_CHEAT, "Critical weapon damage will take distance into account." );
 ConVar tf_weapon_minicrits_distance_falloff( "tf_weapon_minicrits_distance_falloff", "0", FCVAR_CHEAT, "Mini-crit weapon damage will take distance into account." );
 
@@ -686,7 +735,7 @@ ConVar tf_test_special_ducks( "tf_test_special_ducks", "1", FCVAR_DEVELOPMENTONL
 
 ConVar tf_mm_abandoned_players_per_team_max( "tf_mm_abandoned_players_per_team_max", "1", FCVAR_DEVELOPMENTONLY );
 #endif // GAME_DLL
-ConVar tf_mm_next_map_vote_time( "tf_mm_next_map_vote_time", "30", FCVAR_REPLICATED );
+ConVar tf_mm_next_map_vote_time( "tf_mm_next_map_vote_time", "15", FCVAR_REPLICATED );
 
 
 static float g_fEternaweenAutodisableTime = 0.0f;
@@ -818,7 +867,7 @@ ConVar tf_arena_force_class( "tf_arena_force_class", "0", FCVAR_REPLICATED | FCV
 ConVar tf_arena_change_limit( "tf_arena_change_limit", "1", FCVAR_REPLICATED | FCVAR_NOTIFY | FCVAR_DEVELOPMENTONLY | FCVAR_CHEAT, "Number of times players can change their class when mp_force_random_class is being used." );
 ConVar tf_arena_override_cap_enable_time( "tf_arena_override_cap_enable_time", "-1", FCVAR_REPLICATED | FCVAR_NOTIFY, "Overrides the time (in seconds) it takes for the capture point to become enable, -1 uses the level designer specified time." );
 ConVar tf_arena_override_team_size( "tf_arena_override_team_size", "0", FCVAR_REPLICATED, "Overrides the maximum team size in arena mode. Set to zero to keep the default behavior of 1/3 maxplayers.");
-ConVar tf_arena_first_blood( "tf_arena_first_blood", "1", FCVAR_REPLICATED | FCVAR_NOTIFY, "Rewards the first player to get a kill each round." );
+ConVar tf_arena_first_blood( "tf_arena_first_blood", "0", FCVAR_REPLICATED | FCVAR_NOTIFY, "Rewards the first player to get a kill each round." );
 extern ConVar tf_arena_preround_time;
 extern ConVar tf_arena_max_streak;
 #if defined( _DEBUG ) || defined( STAGING_ONLY )
@@ -881,7 +930,35 @@ ConVar tf_grapplinghook_enable( "tf_grapplinghook_enable", "0", FCVAR_REPLICATED
 
 #ifdef GAME_DLL
 CUtlString s_strNextMvMPopFile;
-CON_COMMAND_F( tf_mvm_popfile, "Change to a target popfile for MvM", FCVAR_GAMEDLL )
+
+static int PopfileCompletion( char const *partial, char commands[ COMMAND_COMPLETION_MAXITEMS ][ COMMAND_COMPLETION_ITEM_LENGTH ] )
+{
+	int matches = 0;
+
+	partial += ARRAYSIZE( "tf_mvm_popfile " ) - 1;
+	const int partialLen = V_strlen( partial );
+
+	if ( TFGameRules() && g_pPopulationManager )
+	{
+		CUtlVector< CUtlString > shortNames;
+		g_pPopulationManager->FindDefaultPopulationFileShortNames( shortNames );
+
+		shortNames.Sort( CUtlString::SortCaseInsensitive );
+
+		for ( int i = 0; i < shortNames.Count() && matches < COMMAND_COMPLETION_MAXITEMS; ++i )
+		{
+			const char *popfile = shortNames[ i ];
+			if ( partialLen == 0 || !V_strncasecmp( popfile, partial, partialLen ) )
+			{
+				V_snprintf( commands[ matches++ ], COMMAND_COMPLETION_ITEM_LENGTH, "tf_mvm_popfile %s", popfile );
+			}
+		}
+	}
+
+	return matches;
+}
+
+CON_COMMAND_F_COMPLETION( tf_mvm_popfile, "Change to a target popfile for MvM", FCVAR_GAMEDLL, PopfileCompletion )
 {
 	// Listenserver host or rcon access only!
 	if ( !UTIL_IsCommandIssuedByServerAdmin() )
@@ -963,7 +1040,7 @@ static bool BIsCvarIndicatingHolidayIsActive( int iCvarValue, /*EHoliday*/ int e
 #ifdef GAME_DLL
 bool IsCustomGameMode( const char *pszMapName )
 {
-	return ( StringHasPrefix( pszMapName, "vsh_" ) || StringHasPrefix( pszMapName, "zi_" ) );
+	return ( MapHasPrefix( pszMapName, "vsh_" ) || MapHasPrefix( pszMapName, "zi_" ) );
 }
 
 bool IsCustomGameMode()
@@ -1049,7 +1126,7 @@ static Vector s_BotSpawnPosition;
 
 ConVar tf_gravetalk( "tf_gravetalk", "1", FCVAR_NOTIFY, "Allows living players to hear dead players using text/voice chat.", true, 0, true, 1 );
 
-ConVar tf_ctf_bonus_time ( "tf_ctf_bonus_time", "10", FCVAR_NOTIFY, "Length of team crit time for CTF capture." );
+ConVar tf_ctf_bonus_time ( "tf_ctf_bonus_time", "0", FCVAR_NOTIFY, "Length of team crit time for CTF capture." );
 
 #ifdef _DEBUG
 ConVar mp_scrambleteams_debug( "mp_scrambleteams_debug", "0", FCVAR_NONE, "Debug spew." );
@@ -1075,11 +1152,21 @@ ConVar tf_competitive_required_late_join_timeout( "tf_competitive_required_late_
                                                   "How long to wait for late joiners in matches requiring full player counts before canceling the match" );
 ConVar tf_competitive_required_late_join_confirm_timeout( "tf_competitive_required_late_join_confirm_timeout", "30", FCVAR_DEVELOPMENTONLY,
                                                           "How long to wait for the GC to confirm we're in the late join pool before canceling the match" );
+
+ConVar tf_ready_countdown_reduce_per_player( "tf_ready_countdown_reduce_per_player", "30", FCVAR_NONE, "How many seconds we should reduce the countdown timer by per player readying up" );
+ConVar tf_ready_countdown_minimum( "tf_ready_countdown_minimum", "60", FCVAR_NONE, "When players ready up never reduce the countdown timer below this number of seconds" );
+
 #endif // GAME_DLL
 
 ConVar tf_gamemode_community ( "tf_gamemode_community", "0", FCVAR_REPLICATED | FCVAR_NOTIFY | FCVAR_DEVELOPMENTONLY );
 
+ConVar tf_voice_command_suspension_mode( "tf_voice_command_suspension_mode", "2", FCVAR_REPLICATED, "0 = None | 1 = No Voice Commands | 2 = Rate Limited" );
+
 #ifdef GAME_DLL
+
+ConVar tf_voice_command_suspension_rate_limit_bucket_count( "tf_voice_command_suspension_rate_limit_bucket_count", "5" ); // Bucket size of 5.
+ConVar tf_voice_command_suspension_rate_limit_bucket_refill_rate( "tf_voice_command_suspension_rate_limit_bucket_refill_rate", "6" ); // 6s
+
 void cc_powerup_mode( IConVar *pConVar, const char *pOldString, float flOldValue )
 {
 	ConVarRef var( pConVar );
@@ -1101,11 +1188,11 @@ void cc_powerup_mode( IConVar *pConVar, const char *pOldString, float flOldValue
 }
 
 ConVar tf_powerup_mode( "tf_powerup_mode", "0", FCVAR_NOTIFY, "Enable/disable powerup mode. Not compatible with Mann Vs Machine mode", cc_powerup_mode );
-ConVar tf_powerup_mode_imbalance_delta( "tf_powerup_mode_imbalance_delta", "24", FCVAR_CHEAT, "Powerup kill score lead one team must have before imbalance measures are initiated" );
-ConVar tf_powerup_mode_imbalance_consecutive_min_players( "tf_powerup_mode_imbalance_consecutive_min_players", "10", FCVAR_CHEAT, "Minimum number of players on the server before consecutive imbalance measures trigger team balancing" );
-ConVar tf_powerup_mode_imbalance_consecutive_time( "tf_powerup_mode_imbalance_consecutive_time", "1200", FCVAR_CHEAT, "Teams are balanced if consecutive imbalance measures for the same team are triggered in less time (seconds)" );
-ConVar tf_powerup_mode_dominant_multiplier( "tf_powerup_mode_dominant_multiplier", "3", FCVAR_CHEAT, "The multiple by which a player must exceed the median kills by in order to be considered dominant" );
-ConVar tf_powerup_mode_killcount_timer_length( "tf_powerup_mode_killcount_timer_length", "300", FCVAR_CHEAT, "How long to wait between kill count tests that determine if a player is dominating" ); //should be a multiple of 60 because we use this to calculate an integer
+ConVar tf_powerup_mode_imbalance_delta( "tf_powerup_mode_imbalance_delta", "24", FCVAR_REPLICATED, "Powerup kill score lead one team must have before imbalance measures are initiated" );
+ConVar tf_powerup_mode_imbalance_consecutive_min_players( "tf_powerup_mode_imbalance_consecutive_min_players", "10", FCVAR_REPLICATED, "Minimum number of players on the server before consecutive imbalance measures trigger team balancing" );
+ConVar tf_powerup_mode_imbalance_consecutive_time( "tf_powerup_mode_imbalance_consecutive_time", "1200", FCVAR_REPLICATED, "Teams are balanced if consecutive imbalance measures for the same team are triggered in less time (seconds)" );
+ConVar tf_powerup_mode_dominant_multiplier( "tf_powerup_mode_dominant_multiplier", "3", FCVAR_REPLICATED, "The multiple by which a player must exceed the median kills by in order to be considered dominant" );
+ConVar tf_powerup_mode_killcount_timer_length( "tf_powerup_mode_killcount_timer_length", "300", FCVAR_REPLICATED, "How long to wait between kill count tests that determine if a player is dominating" ); //should be a multiple of 60 because we use this to calculate an integer
 
 ConVar tf_skillrating_update_interval( "tf_skillrating_update_interval", "180", FCVAR_ARCHIVE, "How often to update the GC and OGS." );
 
@@ -2337,14 +2424,17 @@ void CTFGameRules::PlayerReadyStatus_UpdatePlayerState( CTFPlayer *pTFPlayer, bo
 	{
 		if ( IsMannVsMachineMode() )
 		{
+			int nReadyCountdownMinimum = tf_ready_countdown_minimum.GetFloat();
+			int nReadyCountdownReducePerPlayer = tf_ready_countdown_reduce_per_player.GetFloat();
+
 			// Reduce timer as each player hits Ready, but only once per-player
-			if ( !m_bPlayerReadyBefore[nEntIndex] && m_flRestartRoundTime > gpGlobals->curtime + 60.f )
+			if ( !m_bPlayerReadyBefore[nEntIndex] && m_flRestartRoundTime > gpGlobals->curtime + nReadyCountdownMinimum )
 			{
-				float flReduceBy = 30.f;
-				if ( m_flRestartRoundTime < gpGlobals->curtime + 90.f )
+				float flReduceBy = nReadyCountdownReducePerPlayer;
+				if ( m_flRestartRoundTime < gpGlobals->curtime + nReadyCountdownReducePerPlayer + nReadyCountdownMinimum )
 				{
-					// Never reduce below 60 seconds remaining
-					flReduceBy = m_flRestartRoundTime - gpGlobals->curtime - 60.f;
+					// Never reduce below tf_ready_countdown_minimum seconds remaining
+					flReduceBy = m_flRestartRoundTime - gpGlobals->curtime - nReadyCountdownMinimum;
 				}
 
 				m_flRestartRoundTime -= flReduceBy;
@@ -2792,7 +2882,7 @@ void CTFGameRules::Precache( void )
 		CMerasmus::PrecacheMerasmus();
 	}
 
-	if ( StringHasPrefix( STRING( gpGlobals->mapname ), "mvm_" ) )
+	if ( MapHasPrefix( STRING( gpGlobals->mapname ), "mvm_" ) )
 	{
 		CTFPlayer::PrecacheMvM();
 	}
@@ -3382,7 +3472,7 @@ void CTFGameRules::Activate()
 		tf_gamemode_mvm.SetValue( 1 );
 		m_nGameType.Set( TF_GAMETYPE_MVM );
 	}
-	else if ( StringHasPrefix( STRING( gpGlobals->mapname ), "sd_" ) )
+	else if ( MapHasPrefix( STRING( gpGlobals->mapname ), "sd_" ) )
 	{
 		m_bPlayingSpecialDeliveryMode.Set( true );
 		tf_gamemode_sd.SetValue( 1 );
@@ -4874,7 +4964,7 @@ void CTFGameRules::RadiusDamage( const CTakeDamageInfo &info, const Vector &vecS
 //-----------------------------------------------------------------------------
 bool CTFGameRules::ApplyOnDamageModifyRules( CTakeDamageInfo &info, CBaseEntity *pVictimBaseEntity, bool bAllowDamage )
 {
-	info.SetDamageForForceCalc( info.GetDamage() );
+	if (!info.GetDamageForForceCalc()) info.SetDamageForForceCalc( info.GetDamage() );
 	bool bDebug = tf_debug_damage.GetBool();
 
 	CTFPlayer *pVictim = ToTFPlayer( pVictimBaseEntity );
@@ -5543,11 +5633,6 @@ bool CTFGameRules::ApplyOnDamageModifyRules( CTakeDamageInfo &info, CBaseEntity 
 		{
 			flRandomRangeVal = RandomFloat( flMin, flMax );
 		}
-
-		//if ( bDebug )
-		//{
-		//	Warning( "            Val: %.2f\n", flRandomRangeVal );
-		//}
 
 		// Weapon Based Damage Mod
 		if ( pWeapon && pAttacker && pAttacker->IsPlayer() )
@@ -9852,6 +9937,10 @@ const char *CTFGameRules::GetKillingWeaponName( const CTakeDamageInfo &info, CTF
 			killer_weapon_name = "megaton";
 		}
 	}
+	else if ( info.GetDamageCustom() == TF_DMG_CUSTOM_TAUNTATK_TRICKSHOT )
+	{
+		killer_weapon_name = "tf_weapon_taunt_trickshot";
+	}
 	else if ( pScorer && pInflictor && ( pInflictor == pScorer ) )
 	{
 		// If this is not a suicide
@@ -10666,7 +10755,7 @@ void CTFGameRules::ClientDisconnected( edict_t *pClient )
 // Falling damage stuff.
 #define TF_PLAYER_MAX_SAFE_FALL_SPEED	650		
 
-ConVar tf_fall_damage_disablespread( "tf_fall_damage_disablespread", "0", FCVAR_NONE );
+ConVar tf_fall_damage_disablespread( "tf_fall_damage_disablespread", "1", FCVAR_NONE );
 
 float CTFGameRules::FlPlayerFallDamage( CBasePlayer *pPlayer )
 {
@@ -12414,6 +12503,20 @@ bool CTFGameRules::ShouldScrambleTeams( void )
 }
 
 
+static bool PayloadHasTicket( KeyValues *pKeyValues )
+{
+	if ( !pKeyValues )
+		return false;
+
+	for ( KeyValues *pSub = pKeyValues->GetFirstSubKey(); pSub; pSub = pSub->GetNextKey() )
+	{
+		if ( FStrEq( pSub->GetName(), "ticket" ) )
+			return true;
+	}
+
+	return false;
+}
+
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
@@ -12423,6 +12526,12 @@ void CTFGameRules::ClientCommandKeyValues( edict_t *pEntity, KeyValues *pKeyValu
 
 	if ( !pTFPlayer )
 		return;
+
+	// for whatever reason we receive an empty keyvalue on the release build, we can check if it has a ticket which is used only for inventory changes
+	if ( pKeyValues && FStrEq( pKeyValues->GetName(), "" ) && PayloadHasTicket( pKeyValues ) )
+	{
+		pKeyValues->SetName( "sdk_inventory" );
+	}
 
 	char const *pszCommand = pKeyValues->GetName();
 	if ( pszCommand && pszCommand[0] )
@@ -16079,6 +16188,8 @@ const char *GetMapDisplayName( const char *mapName, bool bTitleCase /* = false *
 
 	// we haven't found a "friendly" map name, so let's just clean up what we have
 	if ( !Q_strncmp( pszSrc, "cp_", 3 ) ||
+		 !Q_strncmp( pszSrc, "sp_", 3 ) ||
+		 !Q_strncmp( pszSrc, "tr_", 3 ) ||
 		 !Q_strncmp( pszSrc, "tc_", 3 ) ||
 		 !Q_strncmp( pszSrc, "pl_", 3 ) ||
 		 !Q_strncmp( pszSrc, "ad_", 3 ) ||
@@ -16094,6 +16205,8 @@ const char *GetMapDisplayName( const char *mapName, bool bTitleCase /* = false *
 		pszSrc +=  4;
 	}
 	else if ( !Q_strncmp( szTempName, "koth_", 5 ) ||
+			  !Q_strncmp( pszSrc,	  "jksr_", 5 ) ||
+			  !Q_strncmp( pszSrc,  	  "jump_", 5 ) ||
 			  !Q_strncmp( szTempName, "pass_", 5 ) )
 	{
 		pszSrc +=  5;
@@ -16214,10 +16327,30 @@ const char *GetMapType( const char *mapName )
 		{
 			return "#Gametype_MVM";
 		}
+
+		//Relevant to PF
 		else if ( !Q_strnicmp( mapName, "pass_", 5 ) )
 		{
 			return "#GameType_Passtime";
 		}
+		else if ( !Q_strnicmp( mapName, "jksr_", 5 ) )
+		{
+			return "#GameType_Jacksercise";
+		}
+		else if ( !Q_strnicmp( mapName, "sp_", 3 ) )
+		{
+			return "#GameType_StreetPASS";
+		}
+		else if ( !Q_strnicmp( mapName, "jump_", 5 ) )
+		{
+			return "#GameType_Jump";
+		}
+		else if ( !Q_strnicmp( mapName, "tr_", 3 ) )
+		{
+			return "#GameType_Training";
+		}
+
+		//Back to TF stuff
 		else if ( !Q_strnicmp( mapName, "rd_", 3 ) )
 		{
 			return "#Gametype_RobotDestruction";
